@@ -1,0 +1,121 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User{
+  id String @id @default(uuid())
+  email String @unique()
+  name String 
+  password String
+  role userRole
+  status userStatus
+  RecentProduct RecentProduct[]
+  FollowShop FollowShop[]
+  @@map("users")
+
+
+}
+
+//* Product 
+
+model Product {
+  id String @id @default(uuid())
+  name String 
+  price Int
+  category String 
+  description String 
+  inventory_count Int 
+  discount Int
+  shopId String
+  shop Shop @relation(fields: [shopId], references: [id])
+  product_review product_review[]
+  Order Order[]
+  RecentProduct RecentProduct[] 
+  @@map("products")
+
+ 
+
+}
+model product_review {
+  id String @id @default(uuid())
+  productId String 
+  rating Float
+  product Product @relation(fields: [productId] , references: [id])
+
+  @@map("product_reviews")
+}
+
+model RecentProduct {
+  id String @id @default(uuid())
+  userId String
+  productId String
+  user User @relation(fields: [userId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+}
+
+//*  vendor - shop 
+
+model Shop {
+    id String @id @default(uuid())
+    logo String 
+    name String 
+    description String // shop description
+    Product Product[]
+
+    FollowShop FollowShop[]
+}
+
+model FollowShop {
+  id String @id @default(uuid())
+  userId String
+  shopId String
+  user User @relation(fields: [userId], references: [id])
+  shop Shop @relation(fields: [shopId], references: [id])
+  @@map("follow_shop")
+}
+
+// order table 
+
+model Order { 
+  id String @id @default(uuid())
+  productId String
+  product Product @relation(fields: [productId], references: [id])
+  @@map("orders")
+  Blacklist Blacklist[]
+}
+
+// Blacklist
+model Blacklist {
+  id String @id @default(uuid())
+  orderId String 
+  order Order @relation(fields: [orderId], references: [id])
+  @@map("blacklists")
+}
+
+
+// enums
+enum userRole {
+  ADMIN
+  CUSTOMER
+  VENDOR
+}
+enum userStatus {
+  DELETE
+  SUSPEND
+}
+
+
+
+// product , vendor -shop , order, user , view - recent-products, follow-shop, blacklist 
