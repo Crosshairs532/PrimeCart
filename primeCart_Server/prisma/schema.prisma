@@ -21,6 +21,7 @@ model User{
   password String
   role userRole?
   status userStatus?
+  profilePhoto String? 
   RecentProduct RecentProduct[]
   FollowShop FollowShop[]
   @@map("users")
