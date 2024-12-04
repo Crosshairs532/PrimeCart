@@ -1,6 +1,7 @@
 import { Server } from "http";
 import app from "./app";
 import config from "./config";
+import path from "path";
 
 const main = () => {
   const port = config.port as string;
@@ -9,4 +10,4 @@ const main = () => {
   });
 };
 
-export default main;
+main();

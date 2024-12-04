@@ -19,13 +19,11 @@ model User{
   email String @unique()
   name String 
   password String
-  role userRole
-  status userStatus
+  role userRole?
+  status userStatus?
   RecentProduct RecentProduct[]
   FollowShop FollowShop[]
   @@map("users")
-
-
 }
 
 //* Product 
@@ -114,6 +112,7 @@ enum userRole {
 enum userStatus {
   DELETE
   SUSPEND
+  ACTIVE
 }
 
 
