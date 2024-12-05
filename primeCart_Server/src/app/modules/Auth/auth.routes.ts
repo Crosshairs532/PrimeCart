@@ -1,16 +1,11 @@
 import { Router } from "express";
 import { authController } from "./auth.controller";
-import { fileUploader } from "../../custom/fileUpload";
-import parseData from "../../middleware/parseData";
 
 const router = Router();
 
-router.post(
-  "/registration",
-  fileUploader.upload.single("file"),
-  parseData,
-  authController.userCreate
-);
 router.post("/login", authController.userLogin);
+router.patch("/change-password");
+router.post("/forget-password", authController.forgetPassword);
+router.post("/reset-password", authController.resetPassword);
 
 export const authRoutes = router;

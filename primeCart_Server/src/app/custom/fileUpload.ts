@@ -31,8 +31,7 @@ const uploadImage = async (file: any) => {
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const uploadPath = path.resolve(process.cwd(), "uploads");
-    console.log(process.cwd());
+    const uploadPath = path.join(process.cwd(), "uploads");
     cb(null, uploadPath);
   },
   filename: function (req, file, cb) {

@@ -6,6 +6,8 @@ const parseData = CatchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const userData = JSON.parse(req.body.data);
     const file = req.file;
+
+    // console.log(file);
     const result = (await fileUploader.uploadImage(file)) as any;
     const profilePhoto = result.secure_url;
     req.body = { ...userData, profilePhoto };

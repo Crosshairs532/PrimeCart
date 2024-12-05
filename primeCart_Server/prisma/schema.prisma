@@ -22,6 +22,7 @@ model User{
   role userRole?
   status userStatus?
   profilePhoto String? 
+  vender Boolean @default(false)
   RecentProduct RecentProduct[]
   FollowShop FollowShop[]
   @@map("users")
@@ -72,7 +73,6 @@ model Shop {
     name String 
     description String // shop description
     Product Product[]
-
     FollowShop FollowShop[]
 }
 

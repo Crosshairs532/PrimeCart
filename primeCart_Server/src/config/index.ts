@@ -13,6 +13,10 @@ export const config = {
     cloud_key: process.env.CLOUDINARY_KEY,
     cloud_name: process.env.CLOUDINARY_NAME,
   },
+  nodeMailer: {
+    email_sender: process.env.EMAIL_SENDER,
+    email_app_pass: process.env.EMAIL_APP_PASS,
+  },
 };
 
 export default config;
