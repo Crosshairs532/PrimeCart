@@ -13,6 +13,25 @@ const giveReviewRating = CatchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const manageProductInventory = CatchAsync(
+  async (req: Request, res: Response) => {
+    const { productId } = req.query;
+    const updatedData = req.body;
+
+    console.log(productId, updatedData);
+    const result = await productService.manageProductInventory(
+      productId as string,
+      updatedData
+    );
+    SendResponse(res, {
+      success: true,
+      message: "Product inventory updated!",
+      data: result,
+    });
+  }
+);
+
 export const productController = {
   giveReviewRating,
+  manageProductInventory,
 };
