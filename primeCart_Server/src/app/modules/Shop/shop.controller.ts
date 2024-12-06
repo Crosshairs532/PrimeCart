@@ -23,7 +23,17 @@ const createProduct = CatchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
+const getAllProduct = CatchAsync(async (req: Request, res: Response) => {
+  const result = await shopService.getAllProduct();
+  SendResponse(res, {
+    success: true,
+    message: "User created successfully",
+    data: result,
+  });
+});
 export const shopController = {
   createShop,
   createProduct,
+  getAllProduct,
 };

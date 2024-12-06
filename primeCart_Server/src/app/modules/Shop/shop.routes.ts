@@ -18,9 +18,16 @@ router.post(
 
 router.post(
   "/create-product",
+  auth(userRole.VENDOR),
   fileUploader.upload.array("file"),
   parseMultipleData,
   shopController.createProduct
+);
+
+router.get(
+  "/all-products",
+  auth(userRole.VENDOR),
+  shopController.getAllProduct
 );
 
 export const shopRoute = router;
