@@ -4,7 +4,7 @@ import { authService } from "./auth.service";
 import { SendResponse } from "../../utility/SendResponse";
 
 const userLogin = CatchAsync(async (req: Request, res: Response) => {
-  console.log(req.body);
+  // console.log(req.body);
   const result = await authService.userLogin(req.body);
   SendResponse(res, {
     success: true,

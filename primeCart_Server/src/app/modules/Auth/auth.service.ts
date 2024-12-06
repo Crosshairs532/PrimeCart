@@ -26,7 +26,7 @@ const userLogin = async (payload: any) => {
   }
   //generateToken
   const accessToken = jwtHelper.generateToken(
-    payload,
+    isUserExists,
     config.jwt.jwt_secret as string,
     config.jwt.jwt_expireTime as string
   );

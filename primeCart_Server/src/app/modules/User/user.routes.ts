@@ -11,4 +11,5 @@ router.post(
   parseData,
   userController.userCreate
 );
+
 export const userRoutes = router;

@@ -1,5 +1,7 @@
+import { userRole } from "@prisma/client";
 import prisma from "../../prisma";
 import AppError from "../../utility/AppError";
+import httpStatus from "http-status";
 
 const userCreate = async (payload: any) => {
   //check user exists
@@ -12,12 +14,29 @@ const userCreate = async (payload: any) => {
   if (isUserExists) {
     throw new AppError(httpStatus.NOT_FOUND, "User already exists");
   }
+  const CustomerCreated = await prisma.$transaction(async (tx) => {
+    const userCreated = await tx.user.create({
+      data: payload,
+    });
 
-  const userCreated = await prisma.user.create({
-    data: payload,
+    if (payload.role === userRole.CUSTOMER) {
+      await tx.customer.create({
+        data: {
+          email: payload.email,
+        },
+      });
+    } else if (payload.role === userRole.VENDOR) {
+      await tx.vendor.create({
+        data: {
+          email: payload.email,
+        },
+      });
+    }
+
+    return userCreated;
   });
 
-  return userCreated;
+  return CustomerCreated;
 };
 
 export const userService = {
