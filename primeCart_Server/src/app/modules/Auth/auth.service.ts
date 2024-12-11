@@ -1,4 +1,4 @@
-import { adminController } from "./../Admin/admin.contoller";
+import { adminController } from "../Admin/admin.controller";
 import { userStatus } from "@prisma/client";
 import prisma from "../../prisma";
 import AppError from "../../utility/AppError";

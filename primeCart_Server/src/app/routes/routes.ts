@@ -23,6 +23,10 @@ const routes = [
     path: "/product",
     route: productRoutes,
   },
+  {
+    path: "/admin",
+    route: authRoutes,
+  },
 ];
 routes.forEach((route) => {
   return router.use(route.path, route?.route);

@@ -33,6 +33,7 @@ model Admin {
   id String @id @default(uuid())
   email String @unique()
   user User @relation(fields: [email], references: [email])
+  Blacklist Blacklist[]
 }
 model Customer {
   id String @id @default(uuid())
@@ -44,8 +45,9 @@ model Customer {
 model Vendor {
   id String @id @default(uuid())
   email String @unique()
-  user User @relation(fields: [email], references: [email])
   Shop Shop?
+  Blacklist Blacklist? // one vendor  - one shop - one blacklist 
+  user User @relation(fields: [email], references: [email])
 }
 
 //* Product 
@@ -89,11 +91,12 @@ model Shop {
     id String @id @default(uuid())
     logo String 
     name String 
-    vendorId String @unique
-    vendor Vendor @relation(fields: [vendorId], references: [id])
+    vendorId String @unique()
     description String // shop description
     products Product[]
     followShop FollowShop[]
+    Blacklist Blacklist?
+    vendor Vendor @relation(fields: [vendorId], references: [id])
 }
 
 model FollowShop {
@@ -112,14 +115,18 @@ model Order {
   productId String
   product Product @relation(fields: [productId], references: [id])
   @@map("orders")
-  Blacklist Blacklist[]
+
 }
 
 // Blacklist
 model Blacklist {
   id String @id @default(uuid())
-  orderId String 
-  order Order @relation(fields: [orderId], references: [id])
+  vendorId String @unique()
+  adminId String
+  shopId String  @unique()
+  shop Shop @relation(fields: [shopId], references: [id])
+  admin Admin @relation(fields: [adminId], references: [id])
+  vendor Vendor @relation(fields: [vendorId], references: [id])
   @@map("blacklists")
 }
 
