@@ -1,5 +1,6 @@
 import prisma from "../../prisma";
 import AppError from "../../utility/AppError";
+import { blackListDataT } from "./admin.interface";
 
 const adminSuspendDelete = async (payload: any) => {
   const isUserOrVendorExists = await prisma.user.findMany({
@@ -23,6 +24,15 @@ const adminSuspendDelete = async (payload: any) => {
 
   return statusUpdate;
 };
+
+const adminBlackList = async (blackListData: blackListDataT) => {
+  const addedToBlackList = await prisma.blacklist.create({
+    data: blackListData,
+  });
+
+  return addedToBlackList;
+};
 export const adminService = {
   adminSuspendDelete,
+  adminBlackList,
 };

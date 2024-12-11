@@ -12,6 +12,17 @@ const adminSuspendDelete = CatchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
+const adminShopBlackList = CatchAsync(async (req: Request, res: Response) => {
+  const result = adminService.adminBlackList(req.body);
+  SendResponse(res, {
+    success: true,
+    message: "Vendor  Shop has been added to BlackList",
+    data: result,
+  });
+});
+
 export const adminController = {
   adminSuspendDelete,
+  adminShopBlackList,
 };

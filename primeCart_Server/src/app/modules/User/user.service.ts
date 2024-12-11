@@ -14,7 +14,7 @@ const userCreate = async (payload: any) => {
   if (isUserExists) {
     throw new AppError(httpStatus.NOT_FOUND, "User already exists");
   }
-  const CustomerCreated = await prisma.$transaction(async (tx) => {
+  const userCreated = await prisma.$transaction(async (tx) => {
     const userCreated = await tx.user.create({
       data: payload,
     });
@@ -31,12 +31,18 @@ const userCreate = async (payload: any) => {
           email: payload.email,
         },
       });
+    } else if (payload.role === userRole.ADMIN) {
+      await tx.admin.create({
+        data: {
+          email: payload.email,
+        },
+      });
     }
 
     return userCreated;
   });
 
-  return CustomerCreated;
+  return userCreated;
 };
 
 export const userService = {

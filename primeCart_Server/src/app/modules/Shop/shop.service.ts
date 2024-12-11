@@ -9,16 +9,13 @@ const createShop = async (payload: any) => {
 };
 
 const createProduct = async (payload: any) => {
-  const productCreated = await prisma.$transaction(async (tx) => {
-    //create a product and add the shop id
-    const product = await tx.product.create({
-      data: payload,
-    });
+  console.log(payload);
 
-    return product;
+  //create a product and add the shop id
+  const product = await prisma.product.create({
+    data: payload,
   });
-
-  return productCreated;
+  return product;
 };
 
 const getAllProduct = async () => {

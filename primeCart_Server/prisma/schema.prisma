@@ -32,22 +32,22 @@ model User{
 model Admin {
   id String @id @default(uuid())
   email String @unique()
-  user User @relation(fields: [email], references: [email])
   Blacklist Blacklist[]
+  user User @relation(fields: [email], references: [email], onDelete: Cascade)
 }
 model Customer {
   id String @id @default(uuid())
   email String @unique()
   RecentProduct RecentProduct[]
   FollowShop FollowShop[]
-  user User @relation(fields: [email], references: [email])
+  user User @relation(fields: [email], references: [email], onDelete: Cascade)
 }
 model Vendor {
   id String @id @default(uuid())
   email String @unique()
   Shop Shop?
   Blacklist Blacklist? // one vendor  - one shop - one blacklist 
-  user User @relation(fields: [email], references: [email])
+  user User @relation(fields: [email], references: [email], onDelete: Cascade)
 }
 
 //* Product 
@@ -56,24 +56,33 @@ model Product {
   id String @id @default(uuid())
   name String 
   price Int
-  category String 
   description String 
   inventory_count Int 
   discount Int
   shopId String
   images String[]
-  shop Shop @relation(fields: [shopId], references: [id])
   product_review product_review[]
   Order Order[]
   RecentProduct RecentProduct[] 
+  category Category[] @relation("ProductCategory")
+  shop Shop @relation(fields: [shopId], references: [id], onDelete: Cascade) // delete product from both shop and product table
   @@map("products")
 }
+model Category {
+  id String @id @default(uuid())
+  categoryName String 
+  product Product[] @relation("ProductCategory")
+  @@map("categories")
+
+}
+
+
 model product_review {
   id String @id @default(uuid())
   productId String 
   rating Float
   review String
-  product Product @relation(fields: [productId] , references: [id])
+  product Product @relation(fields: [productId] , references: [id], onDelete: Cascade)
   @@map("product_reviews")
 }
 

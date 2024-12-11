@@ -6,6 +6,7 @@ const parseMultipleData = CatchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const userData = JSON.parse(req.body.data);
     const files = req?.files;
+
     // console.log(files, "images");
 
     const uploadedImages: string[] = [];
@@ -23,7 +24,7 @@ const parseMultipleData = CatchAsync(
 
     req.body = { ...userData, images: uploadedImages };
 
-    // console.log({ ...userData, images: uploadedImages });
+    console.log({ ...userData, images: uploadedImages });
     next();
   }
 );
