@@ -38,4 +38,10 @@ router.patch(
   shopController.manageShop
 );
 
+router.get(
+  "/view-order-history",
+  auth(userRole.VENDOR),
+  shopController.viewOrderHistory
+);
+
 export const shopRoute = router;

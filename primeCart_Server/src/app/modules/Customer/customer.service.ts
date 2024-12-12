@@ -16,6 +16,14 @@ const giveReviewRating = async (payload: any) => {
   return result;
 };
 
+const orderProduct = async (payload: any) => {
+  const result = await prisma.order.create({
+    data: payload,
+  });
+  return result;
+};
+
 export const customerService = {
   giveReviewRating,
+  orderProduct,
 };

@@ -12,7 +12,16 @@ const giveReviewRating = CatchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const orderProduct = CatchAsync(async (req: Request, res: Response) => {
+  const result = await customerService.orderProduct(req.body);
+  SendResponse(res, {
+    success: true,
+    message: "You ordered a product!",
+    data: result,
+  });
+});
 
 export const customerController = {
   giveReviewRating,
+  orderProduct,
 };

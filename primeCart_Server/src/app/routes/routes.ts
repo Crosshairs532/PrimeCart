@@ -4,6 +4,8 @@ import { userRoutes } from "../modules/User/user.routes";
 import { shopRoute } from "../modules/Shop/shop.routes";
 import { productRoutes } from "../modules/Product/product.routes";
 import { adminRoutes } from "../modules/Admin/admin.routes";
+import path from "path";
+import { customerRoutes } from "../modules/Customer/customer.routes";
 
 const router = Router();
 
@@ -27,6 +29,10 @@ const routes = [
   {
     path: "/admin",
     route: adminRoutes,
+  },
+  {
+    path: "/customer",
+    route: customerRoutes,
   },
 ];
 routes.forEach((route) => {

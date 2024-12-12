@@ -33,9 +33,21 @@ const manageShop = async (id: string, payload: any) => {
   });
   return product;
 };
+
+const viewOrderHistory = async (id: string) => {
+  const result = await prisma.order.findMany({
+    where: {
+      shopId: id,
+    },
+  });
+
+  return result;
+};
+
 export const shopService = {
   createShop,
   createProduct,
   getAllProduct,
   manageShop,
+  viewOrderHistory,
 };
