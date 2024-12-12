@@ -24,9 +24,10 @@ model User{
   profilePhoto String? 
   Admin Admin?
   customer Customer?
-  Vendor Vendor?
-  Follows Follow[]
-  Orders Order[]
+  vendor Vendor?
+  follows Follow[]
+  orders Order[]
+  cart Cart[]
   @@map("users")
  
 }
@@ -48,7 +49,7 @@ model Vendor {
   id String @id @default(uuid())
   email String @unique()
   Shop Shop?
-  Blacklist Blacklist? // one vendor  - one shop - one blacklist 
+  blacklist Blacklist? // one vendor  - one shop - one blacklist 
   user User @relation(fields: [email], references: [email], onDelete: Cascade)
 }
 
@@ -64,8 +65,9 @@ model Product {
   shopId String
   images String[]
   product_review product_review[]
-  Order Order[]
-  RecentProduct RecentProduct[] 
+  order Order[]
+  recentProduct RecentProduct[] 
+  cart Cart[]
   category Category[] @relation("ProductCategory")
   shop Shop @relation(fields: [shopId], references: [id], onDelete: Cascade) // delete product from both shop and product table
   @@map("products")
@@ -113,6 +115,8 @@ model Shop {
     Blacklist Blacklist?
     vendor Vendor @relation(fields: [vendorId], references: [id])
     Order Order[]
+
+    Cart Cart[]
 }
 
 model Follow {
@@ -151,6 +155,18 @@ model Blacklist {
   @@map("blacklists")
 }
 
+// cart model
+model Cart {
+id        String     @id @default(uuid())
+userId     String
+user       User     @relation(fields: [userId], references: [id])
+productId  String
+product    Product  @relation(fields: [productId], references: [id])
+shopId String
+shop Shop @relation(fields: [shopId], references: [id])
+quantity   Int
+createdAt  DateTime @default(now())
+}
 
 // enums
 enum userRole {

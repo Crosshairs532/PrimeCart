@@ -33,8 +33,18 @@ const browseProduct = CatchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const addToCart = CatchAsync(async (req: Request, res: Response) => {
+  const result = await customerService.addToCart(req.body);
+  SendResponse(res, {
+    success: true,
+    message: "Product added to Cart",
+    data: result,
+  });
+});
+
 export const customerController = {
   giveReviewRating,
   orderProduct,
   browseProduct,
+  addToCart,
 };

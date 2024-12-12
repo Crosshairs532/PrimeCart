@@ -1,5 +1,6 @@
-import { ProductWhereInput } from "./../../../../node_modules/.prisma/client/index.d";
+import { Prisma } from "@prisma/client";
 import prisma from "../../prisma";
+import AppError from "../../utility/AppError";
 
 const giveReviewRating = async (payload: any) => {
   const feedBack = {
@@ -26,9 +27,9 @@ const orderProduct = async (payload: any) => {
 
 const browseProducts = async (params: any) => {
   // partial - name, description,
-  // exact  - category , price  , inventory
+  // exact  - category , inventory
   const { searchTerm, ...filterItems } = params;
-  const filterData: ProductWhereInput = [];
+  const filterData = [];
 
   const searchOn = ["name", "description"];
 
@@ -61,11 +62,50 @@ const browseProducts = async (params: any) => {
     where: whereCondition,
   });
 
-  console.log(result);
+  return result;
+};
+
+const addToCart = async (payload: any) => {
+  // check if the product is from another shop .
+  const product = await prisma.product.findUnique({
+    where: {
+      id: payload.productId,
+    },
+    select: { shopId: true },
+  });
+
+  if (!product) {
+    throw new AppError(404, "Product Not Found!");
+  }
+
+  // find the user from the cart and his shopId
+  const cartProduct = await prisma.cart.findFirst({
+    where: {
+      userId: payload.userId,
+    },
+    select: {
+      shopId: true,
+    },
+  });
+  if (cartProduct) {
+    if (cartProduct?.shopId != payload.shopId) {
+      throw new AppError(
+        400,
+        "You can't add product from another shop to your cart"
+      );
+    }
+  }
+
+  const result = await prisma.cart.create({
+    data: payload,
+  });
+
+  return result;
 };
 
 export const customerService = {
   giveReviewRating,
   orderProduct,
   browseProducts,
+  addToCart,
 };
