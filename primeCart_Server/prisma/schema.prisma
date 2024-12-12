@@ -25,6 +25,8 @@ model User{
   Admin Admin?
   customer Customer?
   Vendor Vendor?
+  Follows Follow[]
+  Orders Order[]
   @@map("users")
  
 }
@@ -39,7 +41,7 @@ model Customer {
   id String @id @default(uuid())
   email String @unique()
   RecentProduct RecentProduct[]
-  FollowShop FollowShop[]
+  product_reviews product_review[]
   user User @relation(fields: [email], references: [email], onDelete: Cascade)
 }
 model Vendor {
@@ -79,10 +81,14 @@ model Category {
 
 model product_review {
   id String @id @default(uuid())
+  rating Float?
+  review String? //comment 
   productId String 
-  rating Float
-  review String
-  product Product @relation(fields: [productId] , references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId] , references: [id])
+  customerId String 
+  customer Customer @relation(fields: [customerId], references: [id])
+  createdAt DateTime @default(now())
+
   @@map("product_reviews")
 }
 
@@ -103,17 +109,19 @@ model Shop {
     vendorId String @unique()
     description String // shop description
     products Product[]
-    followShop FollowShop[]
+    followers Follow[]
     Blacklist Blacklist?
     vendor Vendor @relation(fields: [vendorId], references: [id])
+    Order Order[]
 }
 
-model FollowShop {
+model Follow {
   id String @id @default(uuid())
   userId String
   shopId String
-  user Customer @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id])
   shop Shop @relation(fields: [shopId], references: [id])
+
   @@map("follow_shop")
 }
 
@@ -123,6 +131,10 @@ model Order {
   id String @id @default(uuid())
   productId String
   product Product @relation(fields: [productId], references: [id])
+  shopId String
+  shop Shop @relation(fields: [shopId], references: [id])
+  userId String 
+  user User @relation(fields: [userId], references: [id])
   @@map("orders")
 
 }

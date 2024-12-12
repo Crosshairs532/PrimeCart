@@ -32,8 +32,19 @@ const getAllProduct = CatchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
+const manageShop = CatchAsync(async (req: Request, res: Response) => {
+  const { id } = req.query;
+  const result = await shopService.manageShop(id as string, req.body);
+  SendResponse(res, {
+    success: true,
+    message: "Shop Updated",
+    data: result,
+  });
+});
 export const shopController = {
   createShop,
   createProduct,
   getAllProduct,
+  manageShop,
 };

@@ -23,8 +23,19 @@ const getAllProduct = async () => {
 
   return result;
 };
+
+const manageShop = async (id: string, payload: any) => {
+  const product = await prisma.shop.update({
+    where: {
+      id: id,
+    },
+    data: payload,
+  });
+  return product;
+};
 export const shopService = {
   createShop,
   createProduct,
   getAllProduct,
+  manageShop,
 };

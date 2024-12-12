@@ -8,6 +8,12 @@ import parseMultipleData from "../../middleware/parseMultipleData";
 
 const router = Router();
 
+router.get(
+  "/all-products",
+  auth(userRole.VENDOR),
+  shopController.getAllProduct
+);
+
 router.post(
   "/create-shop",
   auth(userRole.VENDOR),
@@ -24,10 +30,12 @@ router.post(
   shopController.createProduct
 );
 
-router.get(
-  "/all-products",
+router.patch(
+  "/manage-shop",
   auth(userRole.VENDOR),
-  shopController.getAllProduct
+  fileUploader.upload.single("file"),
+  parseData,
+  shopController.manageShop
 );
 
 export const shopRoute = router;
