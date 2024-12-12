@@ -21,7 +21,20 @@ const orderProduct = CatchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const browseProduct = CatchAsync(async (req: Request, res: Response) => {
+  // search product based on - name , price, category , descriptions, inventory Count.
+
+  const param = req.query;
+  const result = await customerService.browseProducts(param);
+  SendResponse(res, {
+    success: true,
+    message: "Product Retrieved",
+    data: result,
+  });
+});
+
 export const customerController = {
   giveReviewRating,
   orderProduct,
+  browseProduct,
 };

@@ -42,17 +42,19 @@ const manageShop = CatchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
-const viewOrderHistory = CatchAsync(async (req: Request, res: Response) => {
-  const { id } = req.query;
 
-  console.log("order history");
-  const result = await shopService.viewOrderHistory(id as string);
-  SendResponse(res, {
-    success: true,
-    message: "All order history retrieved",
-    data: result,
-  });
-});
+const viewOrderHistory = CatchAsync(
+  async (req: Request & { user?: any }, res: Response) => {
+    const { id } = req.query;
+    const result = await shopService.viewOrderHistory(id as string);
+    SendResponse(res, {
+      success: true,
+      message: "All order history retrieved",
+      data: result,
+    });
+  }
+);
+
 export const shopController = {
   createShop,
   createProduct,

@@ -39,6 +39,11 @@ const viewOrderHistory = async (id: string) => {
     where: {
       shopId: id,
     },
+    include: {
+      product: true,
+      shop: true,
+      user: true,
+    },
   });
 
   return result;

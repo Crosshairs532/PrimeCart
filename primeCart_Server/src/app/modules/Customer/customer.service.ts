@@ -1,3 +1,4 @@
+import { ProductWhereInput } from "./../../../../node_modules/.prisma/client/index.d";
 import prisma from "../../prisma";
 
 const giveReviewRating = async (payload: any) => {
@@ -23,7 +24,48 @@ const orderProduct = async (payload: any) => {
   return result;
 };
 
+const browseProducts = async (params: any) => {
+  // partial - name, description,
+  // exact  - category , price  , inventory
+  const { searchTerm, ...filterItems } = params;
+  const filterData: ProductWhereInput = [];
+
+  const searchOn = ["name", "description"];
+
+  if (searchTerm) {
+    filterData.push({
+      OR: searchOn.map((field: string) => {
+        return {
+          [field]: {
+            contains: searchTerm,
+            mode: "insensitive",
+          },
+        };
+      }),
+    });
+  }
+
+  if (Object.keys(filterItems).length > 0) {
+    filterData.push({
+      AND: Object.keys(filterItems).map((key: any) => ({
+        [key]: {
+          equals: filterItems[key],
+          mode: "insensitive",
+        },
+      })),
+    });
+  }
+
+  const whereCondition = { AND: filterData };
+  const result = await prisma.product.findMany({
+    where: whereCondition,
+  });
+
+  console.log(result);
+};
+
 export const customerService = {
   giveReviewRating,
   orderProduct,
+  browseProducts,
 };
