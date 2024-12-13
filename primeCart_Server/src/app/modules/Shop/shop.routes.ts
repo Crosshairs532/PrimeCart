@@ -42,7 +42,7 @@ router.get(
   "/view-order-history",
   auth(userRole.VENDOR),
   shopController.viewOrderHistory
-);
+); // this is for vendor. they can see the orders that have been made.
 
 router.post(
   "/create-coupon",

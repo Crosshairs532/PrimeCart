@@ -43,9 +43,10 @@ model Customer {
 
   id String @id @default(uuid())
   email String @unique()
-  RecentProduct RecentProduct[]
   product_reviews product_review[]
+  RecentProduct RecentProduct[]
   user User @relation(fields: [email], references: [email], onDelete: Cascade)
+
 
 }
 model Vendor {
@@ -101,13 +102,12 @@ model product_review {
 }
 
 model RecentProduct {
-
   id String @id @default(uuid())
   userId String
   productId String
   user Customer @relation(fields: [userId], references: [id])
   product Product @relation(fields: [productId], references: [id])
-
+  createdAt DateTime @default(now())
 }
 
 //*  vendor - shop 

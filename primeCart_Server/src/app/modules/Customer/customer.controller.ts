@@ -54,10 +54,41 @@ const purchasedHistory = CatchAsync(
   }
 );
 
+const followVendorShop = CatchAsync(async (req: Request, res: Response) => {
+  const result = await customerService.followVendorShop(req.body);
+  SendResponse(res, {
+    success: true,
+    message: "You Followed a Shop",
+    data: result,
+  });
+});
+
+const recentProduct = CatchAsync(async (req: Request, res: Response) => {
+  const result = await customerService.recentProduct(req.body);
+  SendResponse(res, {
+    success: true,
+    message: "You viewed this product",
+    data: result,
+  });
+});
+const ViewRecentProduct = CatchAsync(
+  async (req: Request & { user?: any }, res: Response) => {
+    const result = await customerService.ViewRecentProduct(req.user);
+    SendResponse(res, {
+      success: true,
+      message: "You viewed these products",
+      data: result,
+    });
+  }
+);
+
 export const customerController = {
   giveReviewRating,
   orderProduct,
   browseProduct,
   addToCart,
   purchasedHistory,
+  followVendorShop,
+  recentProduct,
+  ViewRecentProduct,
 };

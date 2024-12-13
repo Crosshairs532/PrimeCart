@@ -151,10 +151,72 @@ const purchasedHistory = async (user: any) => {
   return history;
 };
 
+const followVendorShop = async (followData: any) => {
+  // check id already followed.
+  const userData = await prisma.user.findUnique({
+    where: {
+      id: followData.userId,
+    },
+    include: {
+      follows: true,
+    },
+  });
+
+  if (!userData) {
+    throw new AppError(400, "User not found");
+  }
+  const follows = userData.follows; // all followed users.
+
+  const isFollowed = follows.find(
+    (follow: any) => follow === followData.shopId
+  );
+  if (isFollowed) {
+    throw new AppError(400, "You already followed this shop.");
+  }
+
+  const followed = await prisma.follow.create({
+    data: followData,
+  });
+  return followed;
+};
+
+const recentProduct = async (recentlyViewed: any) => {
+  const result = await prisma.recentProduct.create({
+    data: recentlyViewed,
+  });
+
+  return result;
+};
+const ViewRecentProduct = async (user: any) => {
+  const RecentlyViewedProduct = await prisma.$transaction(async (tx) => {
+    const userOrderData = await tx.user.findUnique({
+      where: {
+        email: user?.email,
+      },
+    });
+    const recentlyViewed = await tx.recentProduct.findMany({
+      where: {
+        userId: user?.id,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      skip: 0,
+      take: 10,
+    });
+    return recentlyViewed;
+  });
+
+  return RecentlyViewedProduct;
+};
+
 export const customerService = {
   giveReviewRating,
   orderProduct,
   browseProducts,
   addToCart,
   purchasedHistory,
+  followVendorShop,
+  recentProduct,
+  ViewRecentProduct,
 };

@@ -16,6 +16,15 @@ router.get(
   "/purchased-order-history",
   auth(userRole.CUSTOMER, userRole.VENDOR),
   customerController.purchasedHistory
+); // this is for customer they can see  their order history
+
+router.post(
+  "/follow-shop",
+  auth(userRole.CUSTOMER),
+  customerController.followVendorShop
 );
+
+router.post("/recent-product", customerController.recentProduct);
+router.post("/view-recent-product", customerController.ViewRecentProduct);
 
 export const customerRoutes = router;
