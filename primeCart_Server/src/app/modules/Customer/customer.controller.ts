@@ -42,9 +42,22 @@ const addToCart = CatchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const purchasedHistory = CatchAsync(
+  async (req: Request & { user?: any }, res: Response) => {
+    const email = req.user;
+    const result = await customerService.purchasedHistory(email);
+    SendResponse(res, {
+      success: true,
+      message: "All Order History Fetched!",
+      data: result,
+    });
+  }
+);
+
 export const customerController = {
   giveReviewRating,
   orderProduct,
   browseProduct,
   addToCart,
+  purchasedHistory,
 };

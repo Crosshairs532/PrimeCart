@@ -1,8 +1,9 @@
-import { Prisma } from "@prisma/client";
 import prisma from "../../prisma";
 import AppError from "../../utility/AppError";
 
 const giveReviewRating = async (payload: any) => {
+  // check if it is purchased.
+
   const feedBack = {
     ...payload,
     rating: payload.rating ? payload.rating : 0,
@@ -19,6 +20,23 @@ const giveReviewRating = async (payload: any) => {
 };
 
 const orderProduct = async (payload: any) => {
+  // check coupon for the specific shop
+  const isCouponExists = await prisma.coupon.findUnique({
+    where: {
+      code: payload.coupon,
+      shopId: payload.shopId,
+    },
+  });
+
+  if (!isCouponExists) {
+    throw new AppError(404, "This Coupon is not available!");
+  }
+
+  const dateCheck = new Date(isCouponExists?.expiresAt).getTime() - Date.now();
+  if (dateCheck < 0) {
+    throw new AppError(404, "Coupon validity Expired!");
+  }
+
   const result = await prisma.order.create({
     data: payload,
   });
@@ -28,7 +46,7 @@ const orderProduct = async (payload: any) => {
 const browseProducts = async (params: any) => {
   // partial - name, description,
   // exact  - category , inventory
-  const { searchTerm, ...filterItems } = params;
+  const { searchTerm, max, min, ...filterItems } = params;
   const filterData = [];
 
   const searchOn = ["name", "description"];
@@ -56,6 +74,16 @@ const browseProducts = async (params: any) => {
       })),
     });
   }
+
+  // price range
+  filterData.push({
+    AND: {
+      price: {
+        gt: min,
+        lt: min,
+      },
+    },
+  });
 
   const whereCondition = { AND: filterData };
   const result = await prisma.product.findMany({
@@ -103,9 +131,30 @@ const addToCart = async (payload: any) => {
   return result;
 };
 
+const purchasedHistory = async (user: any) => {
+  // fetch specific order of the specific user
+  const history = await prisma.$transaction(async (tx) => {
+    const userOrderData = await tx.user.findUnique({
+      where: {
+        email: user?.email,
+      },
+    });
+    const allOrders = await tx.order.findMany({
+      where: {
+        userId: user?.id,
+      },
+    });
+    return allOrders;
+  });
+
+  // console.log(history);
+  return history;
+};
+
 export const customerService = {
   giveReviewRating,
   orderProduct,
   browseProducts,
   addToCart,
+  purchasedHistory,
 };

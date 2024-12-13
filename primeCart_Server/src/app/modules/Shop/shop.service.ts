@@ -49,10 +49,19 @@ const viewOrderHistory = async (id: string) => {
   return result;
 };
 
+const createCoupon = async (couponData: any) => {
+  const result = await prisma.coupon.create({
+    data: couponData,
+  });
+
+  return result;
+};
+
 export const shopService = {
   createShop,
   createProduct,
   getAllProduct,
   manageShop,
   viewOrderHistory,
+  createCoupon,
 };

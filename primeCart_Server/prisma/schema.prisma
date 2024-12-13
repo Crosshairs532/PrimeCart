@@ -15,6 +15,7 @@ datasource db {
 
 
 model User{
+
   id String @id @default(uuid())
   email String @unique()
   name String 
@@ -39,13 +40,16 @@ model Admin {
   user User @relation(fields: [email], references: [email], onDelete: Cascade)
 }
 model Customer {
+
   id String @id @default(uuid())
   email String @unique()
   RecentProduct RecentProduct[]
   product_reviews product_review[]
   user User @relation(fields: [email], references: [email], onDelete: Cascade)
+
 }
 model Vendor {
+
   id String @id @default(uuid())
   email String @unique()
   Shop Shop?
@@ -65,14 +69,16 @@ model Product {
   shopId String
   images String[]
   product_review product_review[]
-  order Order[]
   recentProduct RecentProduct[] 
   cart Cart[]
   category Category[] @relation("ProductCategory")
+  order Order[]
   shop Shop @relation(fields: [shopId], references: [id], onDelete: Cascade) // delete product from both shop and product table
   @@map("products")
 }
+
 model Category {
+
   id String @id @default(uuid())
   categoryName String 
   product Product[] @relation("ProductCategory")
@@ -82,6 +88,7 @@ model Category {
 
 
 model product_review {
+
   id String @id @default(uuid())
   rating Float?
   review String? //comment 
@@ -90,16 +97,17 @@ model product_review {
   customerId String 
   customer Customer @relation(fields: [customerId], references: [id])
   createdAt DateTime @default(now())
-
   @@map("product_reviews")
 }
 
 model RecentProduct {
+
   id String @id @default(uuid())
   userId String
   productId String
   user Customer @relation(fields: [userId], references: [id])
   product Product @relation(fields: [productId], references: [id])
+
 }
 
 //*  vendor - shop 
@@ -114,9 +122,9 @@ model Shop {
     followers Follow[]
     Blacklist Blacklist?
     vendor Vendor @relation(fields: [vendorId], references: [id])
-    Order Order[]
-
-    Cart Cart[]
+    order Order[]
+    cart Cart[]
+    coupon Coupon?
 }
 
 model Follow {
@@ -125,7 +133,6 @@ model Follow {
   shopId String
   user User @relation(fields: [userId], references: [id])
   shop Shop @relation(fields: [shopId], references: [id])
-
   @@map("follow_shop")
 }
 
@@ -133,18 +140,24 @@ model Follow {
 
 model Order { 
   id String @id @default(uuid())
-  productId String
-  product Product @relation(fields: [productId], references: [id])
   shopId String
   shop Shop @relation(fields: [shopId], references: [id])
   userId String 
   user User @relation(fields: [userId], references: [id])
+  productId String
+  product Product @relation(fields: [productId], references: [id])
+  coupon String?
+  purchasedPrice Int
+  createdAt DateTime @default(now())
   @@map("orders")
 
 }
 
+
+
 // Blacklist
 model Blacklist {
+
   id String @id @default(uuid())
   vendorId String @unique()
   adminId String
@@ -153,10 +166,12 @@ model Blacklist {
   admin Admin @relation(fields: [adminId], references: [id])
   vendor Vendor @relation(fields: [vendorId], references: [id])
   @@map("blacklists")
+
 }
 
 // cart model
 model Cart {
+
 id        String     @id @default(uuid())
 userId     String
 user       User     @relation(fields: [userId], references: [id])
@@ -166,8 +181,19 @@ shopId String
 shop Shop @relation(fields: [shopId], references: [id])
 quantity   Int
 createdAt  DateTime @default(now())
+
 }
 
+// Coupon model
+model Coupon {
+  id         String     @id @default(uuid())
+  code       String    @unique
+  discount   Float
+  expiresAt  DateTime
+  createdAt  DateTime  @default(now())
+  shopId  String?   @unique
+  shop    Shop?  @relation(fields: [shopId], references: [id])
+}
 // enums
 enum userRole {
   ADMIN

@@ -44,4 +44,9 @@ router.get(
   shopController.viewOrderHistory
 );
 
+router.post(
+  "/create-coupon",
+  auth(userRole.VENDOR),
+  shopController.createCoupon
+);
 export const shopRoute = router;

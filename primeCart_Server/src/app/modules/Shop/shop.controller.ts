@@ -55,10 +55,20 @@ const viewOrderHistory = CatchAsync(
   }
 );
 
+const createCoupon = CatchAsync(async (req: Request, res: Response) => {
+  const result = await shopService.createCoupon(req.body);
+  SendResponse(res, {
+    success: true,
+    message: "Coupon created successfully",
+    data: result,
+  });
+});
+
 export const shopController = {
   createShop,
   createProduct,
   getAllProduct,
   manageShop,
   viewOrderHistory,
+  createCoupon,
 };
