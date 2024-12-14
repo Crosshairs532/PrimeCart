@@ -64,6 +64,16 @@ const createCoupon = CatchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const singleShopInfo = CatchAsync(async (req: Request, res: Response) => {
+  const { shopId } = req.params;
+  const result = await shopService.singleShopInfo(shopId);
+  SendResponse(res, {
+    success: true,
+    message: "Single Shop Fetched!",
+    data: result,
+  });
+});
+
 export const shopController = {
   createShop,
   createProduct,
@@ -71,4 +81,5 @@ export const shopController = {
   manageShop,
   viewOrderHistory,
   createCoupon,
+  singleShopInfo,
 };

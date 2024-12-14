@@ -62,6 +62,14 @@ const followVendorShop = CatchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const unFollowVendorShop = CatchAsync(async (req: Request, res: Response) => {
+  const result = await customerService.unFollowShop(req.body);
+  SendResponse(res, {
+    success: true,
+    message: "You un-followed a Shop",
+    data: result,
+  });
+});
 
 const recentProduct = CatchAsync(async (req: Request, res: Response) => {
   const result = await customerService.recentProduct(req.body);
@@ -91,4 +99,5 @@ export const customerController = {
   followVendorShop,
   recentProduct,
   ViewRecentProduct,
+  unFollowVendorShop,
 };

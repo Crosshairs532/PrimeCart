@@ -49,4 +49,6 @@ router.post(
   auth(userRole.VENDOR),
   shopController.createCoupon
 );
+
+router.get("/:shopId", shopController.singleShopInfo);
 export const shopRoute = router;

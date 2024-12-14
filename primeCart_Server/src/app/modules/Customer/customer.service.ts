@@ -180,6 +180,27 @@ const followVendorShop = async (followData: any) => {
   return followed;
 };
 
+const unFollowShop = async (unfollowData: any) => {
+  // Check if the follow relationship exists
+  const follow = await prisma.follow.findFirst({
+    where: {
+      userId: unfollowData.userId,
+      shopId: unfollowData.shopId,
+    },
+  });
+
+  if (!follow) {
+    throw new Error("You are not following this shop.");
+  }
+
+  // Delete the follow relationship
+  const deleted = await prisma.follow.delete({
+    where: { id: follow.id },
+  });
+
+  return deleted;
+};
+
 const recentProduct = async (recentlyViewed: any) => {
   const result = await prisma.recentProduct.create({
     data: recentlyViewed,
@@ -219,4 +240,5 @@ export const customerService = {
   followVendorShop,
   recentProduct,
   ViewRecentProduct,
+  unFollowShop,
 };

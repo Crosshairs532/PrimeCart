@@ -39,6 +39,11 @@ const singleProduct = async (id: string) => {
       },
     },
   });
+
+  return {
+    singleProduct,
+    productsOfSameCategory,
+  };
 };
 
 const singleProductReview = async (productId: string) => {

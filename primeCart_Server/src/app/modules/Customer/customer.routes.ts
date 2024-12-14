@@ -23,6 +23,11 @@ router.post(
   auth(userRole.CUSTOMER),
   customerController.followVendorShop
 );
+router.post(
+  "/unfollow-shop",
+  auth(userRole.CUSTOMER),
+  customerController.unFollowVendorShop
+);
 
 router.post("/recent-product", customerController.recentProduct);
 router.post("/view-recent-product", customerController.ViewRecentProduct);

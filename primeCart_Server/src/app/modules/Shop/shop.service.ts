@@ -57,6 +57,15 @@ const createCoupon = async (couponData: any) => {
   return result;
 };
 
+const singleShopInfo = async (shopId: string) => {
+  const result = await prisma.shop.findUnique({
+    where: {
+      id: shopId,
+    },
+  });
+  return result;
+};
+
 export const shopService = {
   createShop,
   createProduct,
@@ -64,4 +73,5 @@ export const shopService = {
   manageShop,
   viewOrderHistory,
   createCoupon,
+  singleShopInfo,
 };
