@@ -21,6 +21,27 @@ const manageProductInventory = CatchAsync(
   }
 );
 
+const singleProduct = CatchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const result = await productService.singleProduct(id);
+  SendResponse(res, {
+    success: true,
+    message: "Single Product Retrieved!",
+    data: result,
+  });
+});
+const singleProductReview = CatchAsync(async (req: Request, res: Response) => {
+  const { productId } = req.params;
+  const result = await productService.singleProductReview(productId);
+  SendResponse(res, {
+    success: true,
+    message: "Single Product Review Retrieved!",
+    data: result,
+  });
+});
+
 export const productController = {
   manageProductInventory,
+  singleProduct,
+  singleProductReview,
 };
