@@ -1,3 +1,4 @@
+import { Follow } from "./../../../../node_modules/.prisma/client/index.d";
 import prisma from "../../prisma";
 
 const createShop = async (payload: any) => {
@@ -62,7 +63,11 @@ const singleShopInfo = async (shopId: string) => {
     where: {
       id: shopId,
     },
+    include: {
+      followers: true,
+    },
   });
+
   return result;
 };
 

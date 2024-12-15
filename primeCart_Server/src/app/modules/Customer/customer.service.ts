@@ -131,6 +131,24 @@ const addToCart = async (payload: any) => {
   return result;
 };
 
+const replaceTheCart = async (payload: any) => {
+  // delete the previous data from the cart and add new one's
+
+  const replacedCartProduct = await prisma.$transaction(async (tx) => {
+    const deletePreviousProduct = await tx.cart.deleteMany({});
+
+    if (deletePreviousProduct) {
+      const newProductCart = await tx.cart.create({
+        data: payload,
+      });
+
+      return newProductCart;
+    }
+  });
+
+  return replacedCartProduct;
+};
+
 const purchasedHistory = async (user: any) => {
   // fetch specific order of the specific user
   const history = await prisma.$transaction(async (tx) => {
@@ -241,4 +259,5 @@ export const customerService = {
   recentProduct,
   ViewRecentProduct,
   unFollowShop,
+  replaceTheCart,
 };

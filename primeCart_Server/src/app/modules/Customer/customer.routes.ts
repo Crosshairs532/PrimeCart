@@ -12,6 +12,7 @@ router.post(
 );
 router.get("/browse-products", customerController.browseProduct);
 router.post("/add-to-cart", customerController.addToCart);
+router.post("/replace-cart", customerController.replaceTheCart);
 router.get(
   "/purchased-order-history",
   auth(userRole.CUSTOMER, userRole.VENDOR),

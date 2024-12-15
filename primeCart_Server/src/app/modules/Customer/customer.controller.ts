@@ -42,6 +42,15 @@ const addToCart = CatchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const replaceTheCart = CatchAsync(async (req: Request, res: Response) => {
+  const result = await customerService.replaceTheCart(req.body);
+  SendResponse(res, {
+    success: true,
+    message: "Product added to Cart",
+    data: result,
+  });
+});
+
 const purchasedHistory = CatchAsync(
   async (req: Request & { user?: any }, res: Response) => {
     const email = req.user;
@@ -100,4 +109,5 @@ export const customerController = {
   recentProduct,
   ViewRecentProduct,
   unFollowVendorShop,
+  replaceTheCart,
 };
