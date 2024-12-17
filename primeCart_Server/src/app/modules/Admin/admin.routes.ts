@@ -19,7 +19,7 @@ router.post(
 );
 router.post(
   "/create-category",
-  auth(userRole.ADMIN),
+  // auth(userRole.ADMIN),
   categoryController.createCategory
 ); //create category
 router.patch(

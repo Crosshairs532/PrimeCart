@@ -9,11 +9,10 @@ export default function Error({
   error: Error;
   reset: () => void;
 }) {
-  useEffect(() => {
-    // Log the error to an error reporting service
-    /* eslint-disable no-console */
-    console.error(error);
-  }, [error]);
+  // useEffect(() => {
+  //   // Log the error to an error reporting service
+  //   /* eslint-disable no-console */
+  // }, [error]);
 
   return (
     <div>

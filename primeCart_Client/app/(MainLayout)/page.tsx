@@ -1,9 +1,11 @@
-import React from "react";
+import AllProducts from "@/components/Product/AllProducts";
+import Banner from "@/ui/Banner";
 
 const MainPage = () => {
   return (
     <div>
-      <h1>Hello world</h1>
+      <Banner />
+      <AllProducts />
     </div>
   );
 };

@@ -49,7 +49,7 @@ const browseProducts = async (params: any) => {
   const { searchTerm, max, min, userId, ...filterItems } = params;
   const filterData = [];
   const searchOn = ["name", "description"];
-
+  console.log(params);
   if (searchTerm) {
     filterData.push({
       OR: searchOn.map((field: string) => {
@@ -63,7 +63,10 @@ const browseProducts = async (params: any) => {
     });
   }
 
-  if (Object.keys(filterItems).length > 0) {
+  if (
+    Object.keys(filterItems).length > 0 &&
+    filterItems.hasOwnProperty(["name", "description"])
+  ) {
     filterData.push({
       AND: Object.keys(filterItems).map((key: any) => ({
         [key]: {

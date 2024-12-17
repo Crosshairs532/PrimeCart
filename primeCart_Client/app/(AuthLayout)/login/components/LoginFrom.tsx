@@ -15,6 +15,7 @@ import {
 } from "@/components/icons";
 import { useLogin, useRegistration } from "@/hooks/Auth/auth.hook";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const LoginForm = () => {
   const [isVisible, setIsVisible] = React.useState(false);
@@ -58,6 +59,17 @@ const LoginForm = () => {
           startContent={<LockIcon />}
           type={isVisible ? "text" : "password"}
         />
+      </div>
+
+      <div className=" pb-6 flex justify-between">
+        <small className=" hover:border-b-1 border-b-cyan-700">
+          forgot password
+        </small>
+        <Link href="/registration">
+          <small className=" hover:border-b-1 border-b-cyan-700">
+            Dont't have an account?
+          </small>
+        </Link>
       </div>
 
       <Button type="submit" className=" bg-[#010101] text-[#f2f0ea]">

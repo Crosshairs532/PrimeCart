@@ -14,6 +14,7 @@ import {
   UserEmailIcon,
 } from "@/components/icons";
 import { useRegistration } from "@/hooks/Auth/auth.hook";
+import Link from "next/link";
 
 const RegFrom = () => {
   const [isVisible, setIsVisible] = React.useState(false);
@@ -121,7 +122,13 @@ const RegFrom = () => {
           </div>
         )}
       </div>
-
+      <div className=" pb-6 flex justify-end">
+        <Link href="/login">
+          <small className=" hover:border-b-1 border-b-cyan-700">
+            Already have an account?
+          </small>
+        </Link>
+      </div>
       <Button type="submit" className=" bg-[#010101] text-[#f2f0ea]">
         register
       </Button>

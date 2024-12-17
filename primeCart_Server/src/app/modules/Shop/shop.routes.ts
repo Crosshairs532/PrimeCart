@@ -10,13 +10,13 @@ const router = Router();
 
 router.get(
   "/vendor-all-products",
-  auth(userRole.VENDOR),
+  // auth(userRole.VENDOR),
   shopController.getAllProduct
 ); // vendor specific products.
 
 router.post(
   "/create-shop",
-  auth(userRole.VENDOR),
+  // auth(userRole.VENDOR),
   fileUploader.upload.single("file"),
   parseData,
   shopController.createShop
@@ -24,7 +24,7 @@ router.post(
 
 router.post(
   "/create-product",
-  auth(userRole.VENDOR),
+  // auth(userRole.VENDOR),
   fileUploader.upload.array("file"),
   parseMultipleData,
   shopController.createProduct
@@ -32,7 +32,7 @@ router.post(
 
 router.patch(
   "/manage-shop",
-  auth(userRole.VENDOR),
+  // auth(userRole.VENDOR),
   fileUploader.upload.single("file"),
   parseData,
   shopController.manageShop

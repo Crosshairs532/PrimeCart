@@ -1,6 +1,6 @@
 "use client";
 
-import { Navbar } from "@/components/navbar";
+import { Navbar } from "@/ui/navbar";
 import React from "react";
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
@@ -10,7 +10,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
         className={` text-foreground bg-background relative flex flex-col h-screen`}
       >
         <Navbar />
-        <main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
+        <main className="container mx-auto max-w-7xl pt-16  border-2 flex-grow">
           {children}
         </main>
       </div>

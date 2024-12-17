@@ -1,7 +1,18 @@
 import { Follow } from "./../../../../node_modules/.prisma/client/index.d";
 import prisma from "../../prisma";
+import AppError from "../../utility/AppError";
 
 const createShop = async (payload: any) => {
+  console.log(payload);
+  // check if vendor Exists.
+  const vendor = await prisma.vendor.findUnique({
+    where: { id: payload.vendorId },
+  });
+
+  if (!vendor) {
+    throw new AppError(404, "Vendor not found.");
+  }
+
   const result = await prisma.shop.create({
     data: payload,
   });
