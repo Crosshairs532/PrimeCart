@@ -22,3 +22,24 @@ export const useRegistration = () => {
     },
   });
 };
+
+export const useLogin = () => {
+  return useMutation({
+    mutationKey: ["login"],
+    mutationFn: authService.Login,
+    onSuccess: (data, variables, context) => {
+      // successful
+      console.log({ variables }, { data });
+      toast.success("Login Successful", {
+        position: "bottom-right",
+      });
+    },
+    onError: (error: any) => {
+      console.log(error);
+      const message = error?.response?.data?.message as
+        | string
+        | "Something went wrong !";
+      toast.error(message);
+    },
+  });
+};
