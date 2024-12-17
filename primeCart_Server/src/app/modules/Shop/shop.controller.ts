@@ -25,10 +25,11 @@ const createProduct = CatchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllProduct = CatchAsync(async (req: Request, res: Response) => {
-  const result = await shopService.getAllProduct();
+  const { id } = req.query;
+  const result = await shopService.getAllProduct(id as string);
   SendResponse(res, {
     success: true,
-    message: "User created successfully",
+    message: "All vendor specific products fetched.",
     data: result,
   });
 });
@@ -74,6 +75,23 @@ const singleShopInfo = CatchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const productReview = CatchAsync(async (req: Request, res: Response) => {
+  const result = await shopService.productReviewRating();
+  SendResponse(res, {
+    success: true,
+    message: "All product review fetched",
+    data: result,
+  });
+});
+
+const flashSale = CatchAsync(async (req: Request, res: Response) => {
+  const result = await shopService.flashSale(req.body);
+  SendResponse(res, {
+    success: true,
+    message: "Flash-sale given Successfully ",
+    data: result,
+  });
+});
 export const shopController = {
   createShop,
   createProduct,
@@ -82,4 +100,6 @@ export const shopController = {
   viewOrderHistory,
   createCoupon,
   singleShopInfo,
+  productReview,
+  flashSale,
 };

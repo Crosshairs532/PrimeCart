@@ -12,6 +12,16 @@ const productReview = CatchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const flashSale = CatchAsync(async (req: Request, res: Response) => {
+  const result = await vendorService.flashSale(req.body);
+  SendResponse(res, {
+    success: true,
+    message: "User created successfully",
+    data: result,
+  });
+});
+
 export const vendorController = {
   productReview,
+  flashSale,
 };

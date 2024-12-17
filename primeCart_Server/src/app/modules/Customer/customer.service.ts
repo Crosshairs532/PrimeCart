@@ -46,9 +46,8 @@ const orderProduct = async (payload: any) => {
 const browseProducts = async (params: any) => {
   // partial - name, description,
   // exact  - category , inventory
-  const { searchTerm, max, min, ...filterItems } = params;
+  const { searchTerm, max, min, userId, ...filterItems } = params;
   const filterData = [];
-
   const searchOn = ["name", "description"];
 
   if (searchTerm) {
@@ -74,7 +73,6 @@ const browseProducts = async (params: any) => {
       })),
     });
   }
-
   // price range
   filterData.push({
     AND: {
@@ -86,11 +84,57 @@ const browseProducts = async (params: any) => {
   });
 
   const whereCondition = { AND: filterData };
-  const result = await prisma.product.findMany({
-    where: whereCondition,
-  });
+  let followedShopProducts;
+  let unFollowedShopProducts;
+  let allProducts;
 
-  return result;
+  if (userId) {
+    // 4. Fetch followed shop products
+    followedShopProducts = await prisma.product.findMany({
+      where: {
+        AND: [
+          whereCondition,
+          {
+            shop: {
+              followers: {
+                some: {
+                  userId,
+                },
+              },
+            },
+          },
+        ],
+      },
+      include: { shop: true },
+    });
+
+    // 5. Fetch unfollowed shop products
+    unFollowedShopProducts = await prisma.product.findMany({
+      where: {
+        AND: [
+          whereCondition,
+          {
+            shop: {
+              followers: {
+                none: {
+                  userId,
+                },
+              },
+            },
+          },
+        ],
+      },
+      include: { shop: true },
+    });
+    // 6. Merge followed and unfollowed products (followed first)
+    allProducts = [...followedShopProducts, ...unFollowedShopProducts];
+  } else {
+    allProducts = await prisma.product.findMany({
+      where: whereCondition,
+    });
+  }
+
+  return allProducts;
 };
 
 const addToCart = async (payload: any) => {

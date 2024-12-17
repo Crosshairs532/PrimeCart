@@ -19,8 +19,16 @@ const createProduct = async (payload: any) => {
   return product;
 };
 
-const getAllProduct = async () => {
-  const result = await prisma.product.findMany({});
+// find vendor specific products
+const getAllProduct = async (vendorId: string) => {
+  const result = await prisma.shop.findMany({
+    where: {
+      vendorId: vendorId,
+    },
+    select: {
+      products: true,
+    },
+  });
 
   return result;
 };
@@ -71,6 +79,18 @@ const singleShopInfo = async (shopId: string) => {
   return result;
 };
 
+const productReviewRating = async () => {
+  const reviews = await prisma.product_review.findMany({});
+  return reviews;
+};
+
+const flashSale = async (flashSaleData: any) => {
+  //
+  const flashSaleProducts = await prisma.flashSale.create({
+    data: flashSaleData,
+  });
+};
+
 export const shopService = {
   createShop,
   createProduct,
@@ -79,4 +99,6 @@ export const shopService = {
   viewOrderHistory,
   createCoupon,
   singleShopInfo,
+  productReviewRating,
+  flashSale,
 };

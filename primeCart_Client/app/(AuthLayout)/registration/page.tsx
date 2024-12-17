@@ -1,12 +1,15 @@
 import React from "react";
 import RegFrom from "./components/RegFrom";
 import { Logo } from "@/components/icons";
+import Link from "next/link";
 
 const RegistrationPage = () => {
   return (
     <section className=" min-h-screen flex justify-center items-center">
       <div className=" w-[60vh] h-[50vh]">
-        <Logo className="  mx-auto leading-none" size={60} />
+        <Link href={"/"}>
+          <Logo className="  mx-auto leading-none" size={60} />
+        </Link>
 
         <h1 className=" text-center font-bold text-[4vh]">
           Ready to Get Premium Stuff??

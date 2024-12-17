@@ -9,10 +9,10 @@ import parseMultipleData from "../../middleware/parseMultipleData";
 const router = Router();
 
 router.get(
-  "/all-products",
+  "/vendor-all-products",
   auth(userRole.VENDOR),
   shopController.getAllProduct
-);
+); // vendor specific products.
 
 router.post(
   "/create-shop",
@@ -51,4 +51,13 @@ router.post(
 );
 
 router.get("/:shopId", shopController.singleShopInfo);
+
+router.post(
+  "/view-all-reviews",
+  auth(userRole.VENDOR),
+  shopController.productReview
+);
+
+router.post("/flash-sale", auth(userRole.VENDOR), shopController.flashSale);
+
 export const shopRoute = router;

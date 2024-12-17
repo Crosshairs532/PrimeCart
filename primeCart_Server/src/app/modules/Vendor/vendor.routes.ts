@@ -11,4 +11,6 @@ router.post(
   vendorController.productReview
 );
 
+router.post("/flash-sale", auth(userRole.VENDOR), vendorController.flashSale);
+
 export const userRoutes = router;

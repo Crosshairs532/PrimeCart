@@ -5,6 +5,11 @@ const productReviewRating = async () => {
   return reviews;
 };
 
+const flashSale = async (flashSaleData: any) => {
+  //
+};
+
 export const vendorService = {
   productReviewRating,
+  flashSale,
 };

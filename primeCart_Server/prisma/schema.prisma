@@ -75,7 +75,7 @@ model Product {
   category Category[] @relation("ProductCategory")
   order Order[]
   shop Shop @relation(fields: [shopId], references: [id], onDelete: Cascade) // delete product from both shop and product table
-  flashSale FlashSale[]
+  flashSale FlashSale?
   @@map("products")
 }
 
@@ -119,13 +119,15 @@ model Shop {
     name String 
     vendorId String @unique()
     description String // shop description
-    products Product[]
-    followers Follow[]
     Blacklist Blacklist?
     vendor Vendor @relation(fields: [vendorId], references: [id])
-    order Order[]
-    cart Cart[]
     coupon Coupon?
+    order Order[]
+    followers Follow[]
+    cart Cart[]
+    products Product[]
+    flashSale FlashSale[]
+
 }
 
 model Follow {
@@ -187,11 +189,15 @@ createdAt  DateTime @default(now())
 // Flash Sale model
 model FlashSale {
 id        String      @id @default(uuid())
-productId String
+productId String @unique()
+shopId String 
+vendorId String 
+shop Shop @relation(fields: [shopId], references: [id])
 product   Product  @relation(fields: [productId], references: [id])
 discount Float
 startTime DateTime
 endTime   DateTime
+
 }
 
 // Coupon model
