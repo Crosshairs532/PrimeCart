@@ -66,7 +66,7 @@ model Product {
   price Int
   description String 
   inventory_count Int 
-  discount Int
+  discount Float
   shopId String
   images String[]
   product_review product_review[]
@@ -75,6 +75,7 @@ model Product {
   category Category[] @relation("ProductCategory")
   order Order[]
   shop Shop @relation(fields: [shopId], references: [id], onDelete: Cascade) // delete product from both shop and product table
+  flashSale FlashSale[]
   @@map("products")
 }
 
@@ -183,12 +184,21 @@ quantity   Int
 createdAt  DateTime @default(now())
 
 }
+// Flash Sale model
+model FlashSale {
+id        String      @id @default(uuid())
+productId String
+product   Product  @relation(fields: [productId], references: [id])
+discount Float
+startTime DateTime
+endTime   DateTime
+}
 
 // Coupon model
 model Coupon {
   id         String     @id @default(uuid())
   code       String    @unique
-  discount   Float
+  discount Float
   expiresAt  DateTime
   createdAt  DateTime  @default(now())
   shopId  String?   @unique

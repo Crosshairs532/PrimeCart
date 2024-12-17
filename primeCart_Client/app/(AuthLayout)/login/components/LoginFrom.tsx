@@ -14,16 +14,19 @@ import {
   UserEmailIcon,
 } from "@/components/icons";
 import { useLogin, useRegistration } from "@/hooks/Auth/auth.hook";
+import { useRouter } from "next/navigation";
 
 const LoginForm = () => {
   const [isVisible, setIsVisible] = React.useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
   const { register, handleSubmit } = useForm();
   const { mutate: Login } = useLogin();
+  const route = useRouter();
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     console.log(data);
     Login(data);
+    route.replace("/");
   };
 
   return (
