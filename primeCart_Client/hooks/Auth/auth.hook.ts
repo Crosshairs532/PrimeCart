@@ -8,12 +8,17 @@ export const useRegistration = () => {
     mutationFn: authService.Registration,
     onSuccess: (data, variables, context) => {
       // successful
+      console.log({ variables }, { data });
       toast.success("Registration Successful", {
         position: "bottom-right",
       });
     },
-    onError: (error) => {
-      toast.error("Something wen wrong !");
+    onError: (error: any) => {
+      console.log(error);
+      const message = error?.response?.data?.message as
+        | string
+        | "Something went wrong !";
+      toast.error(message);
     },
   });
 };

@@ -38,7 +38,7 @@ const globalError: ErrorRequestHandler = (err, req, res, next) => {
   if (err instanceof AppError) {
     console.log("Error");
     statusCode = err?.statusCode;
-    message = err.message;
+    message = err?.message;
     errorSource = [
       {
         path: "",
@@ -55,9 +55,11 @@ const globalError: ErrorRequestHandler = (err, req, res, next) => {
     ];
   }
 
+  console.log(message);
+
   res.status(statusCode).json({
     success: false,
-    message: err || message,
+    message: message,
     errorSource,
   });
   return;
