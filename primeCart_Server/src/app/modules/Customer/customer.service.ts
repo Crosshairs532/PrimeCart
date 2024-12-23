@@ -43,103 +43,6 @@ const orderProduct = async (payload: any) => {
   return result;
 };
 
-const browseProducts = async (params: any) => {
-  // partial - name, description,
-  // exact  - category , inventory
-  const { searchTerm, max, min, userId, ...filterItems } = params;
-  const filterData = [];
-  const searchOn = ["name", "description"];
-  console.log(params);
-  if (searchTerm) {
-    filterData.push({
-      OR: searchOn.map((field: string) => {
-        return {
-          [field]: {
-            contains: searchTerm,
-            mode: "insensitive",
-          },
-        };
-      }),
-    });
-  }
-
-  if (
-    Object.keys(filterItems).length > 0 &&
-    filterItems.hasOwnProperty(["name", "description"])
-  ) {
-    filterData.push({
-      AND: Object.keys(filterItems).map((key: any) => ({
-        [key]: {
-          equals: filterItems[key],
-          mode: "insensitive",
-        },
-      })),
-    });
-  }
-  // price range
-  filterData.push({
-    AND: {
-      price: {
-        gt: min,
-        lt: min,
-      },
-    },
-  });
-
-  const whereCondition = { AND: filterData };
-  let followedShopProducts;
-  let unFollowedShopProducts;
-  let allProducts;
-
-  if (userId) {
-    // 4. Fetch followed shop products
-    followedShopProducts = await prisma.product.findMany({
-      where: {
-        AND: [
-          whereCondition,
-          {
-            shop: {
-              followers: {
-                some: {
-                  userId,
-                },
-              },
-            },
-          },
-        ],
-      },
-      include: { shop: true },
-    });
-
-    // 5. Fetch unfollowed shop products
-    unFollowedShopProducts = await prisma.product.findMany({
-      where: {
-        AND: [
-          whereCondition,
-          {
-            shop: {
-              followers: {
-                none: {
-                  userId,
-                },
-              },
-            },
-          },
-        ],
-      },
-      include: { shop: true },
-    });
-    // 6. Merge followed and unfollowed products (followed first)
-    allProducts = [...followedShopProducts, ...unFollowedShopProducts];
-  } else {
-    allProducts = await prisma.product.findMany({
-      where: whereCondition,
-    });
-  }
-
-  return allProducts;
-};
-
 const addToCart = async (payload: any) => {
   // check if the product is from another shop .
   const product = await prisma.product.findUnique({
@@ -299,7 +202,7 @@ const ViewRecentProduct = async (user: any) => {
 export const customerService = {
   giveReviewRating,
   orderProduct,
-  browseProducts,
+
   addToCart,
   purchasedHistory,
   followVendorShop,

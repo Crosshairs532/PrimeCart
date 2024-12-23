@@ -4,7 +4,6 @@ import auth from "../../middleware/auth";
 import { userRole } from "@prisma/client";
 const router = Router();
 
-router.get("/browse-products", customerController.browseProduct);
 router.get(
   "/purchased-order-history",
   auth(userRole.CUSTOMER, userRole.VENDOR),

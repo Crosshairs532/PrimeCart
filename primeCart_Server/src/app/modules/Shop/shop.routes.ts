@@ -7,13 +7,18 @@ import { userRole } from "@prisma/client";
 import parseMultipleData from "../../middleware/parseMultipleData";
 
 const router = Router();
-
+router.get("/:shopId", shopController.singleShopInfo);
 router.get(
   "/vendor-all-products",
   // auth(userRole.VENDOR),
   shopController.getAllProduct
 ); // vendor specific products.
-
+router.get(
+  "/view-order-history",
+  auth(userRole.VENDOR),
+  shopController.viewOrderHistory
+); // this is for vendor. they can see the orders that have been made.
+router.get("/browse-products", shopController.browseProduct);
 router.post(
   "/create-shop",
   // auth(userRole.VENDOR),
@@ -30,27 +35,11 @@ router.post(
   shopController.createProduct
 );
 
-router.patch(
-  "/manage-shop",
-  // auth(userRole.VENDOR),
-  fileUploader.upload.single("file"),
-  parseData,
-  shopController.manageShop
-);
-
-router.get(
-  "/view-order-history",
-  auth(userRole.VENDOR),
-  shopController.viewOrderHistory
-); // this is for vendor. they can see the orders that have been made.
-
 router.post(
   "/create-coupon",
   auth(userRole.VENDOR),
   shopController.createCoupon
 );
-
-router.get("/:shopId", shopController.singleShopInfo);
 
 router.post(
   "/view-all-reviews",
@@ -59,5 +48,13 @@ router.post(
 );
 
 router.post("/flash-sale", auth(userRole.VENDOR), shopController.flashSale);
+
+router.patch(
+  "/manage-shop",
+  // auth(userRole.VENDOR),
+  fileUploader.upload.single("file"),
+  parseData,
+  shopController.manageShop
+);
 
 export const shopRoute = router;

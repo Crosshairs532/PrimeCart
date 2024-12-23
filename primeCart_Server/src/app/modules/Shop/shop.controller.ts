@@ -3,6 +3,18 @@ import CatchAsync from "../../utility/CatchAsync";
 import { SendResponse } from "../../utility/SendResponse";
 import { shopService } from "./shop.service";
 
+const browseProduct = CatchAsync(async (req: Request, res: Response) => {
+  // search product based on - name , price, category , descriptions, inventory Count.
+
+  const param = req.query;
+
+  const result = await shopService.browseProducts(param);
+  SendResponse(res, {
+    success: true,
+    message: "Product Retrieved",
+    data: result,
+  });
+});
 const createShop = CatchAsync(async (req: Request, res: Response) => {
   const { profilePhoto, ...other } = req.body;
   const newShop = { ...other, logo: profilePhoto };
@@ -10,7 +22,7 @@ const createShop = CatchAsync(async (req: Request, res: Response) => {
   const result = await shopService.createShop(newShop);
   SendResponse(res, {
     success: true,
-    message: "User created successfully",
+    message: "Shop created successfully",
     data: result,
   });
 });
@@ -19,7 +31,7 @@ const createProduct = CatchAsync(async (req: Request, res: Response) => {
   const result = await shopService.createProduct(req.body);
   SendResponse(res, {
     success: true,
-    message: "User created successfully",
+    message: "Product created successfully",
     data: result,
   });
 });
@@ -102,4 +114,5 @@ export const shopController = {
   singleShopInfo,
   productReview,
   flashSale,
+  browseProduct,
 };

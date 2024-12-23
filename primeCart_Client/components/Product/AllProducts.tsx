@@ -15,15 +15,15 @@ const AllProducts = () => {
           <p>loading...</p>
         </div>
       ) : products?.length > 0 ? (
-        <div>
+        <div className=" grid sm:grid-cols-4 gap-3">
           {products?.map((product: any, idx: number) => (
             <ProductCard
               key={idx}
-              id={product.id}
-              name={product.name}
-              price={product.price}
-              description={product.description}
-              images={product.images}
+              id={product?.id}
+              name={product?.name}
+              price={product?.price}
+              description={product?.description}
+              images={product?.images}
             />
           ))}
         </div>

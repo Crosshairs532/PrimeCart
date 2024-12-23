@@ -5,6 +5,12 @@ const AllProducts = async (id: string) => {
   return result.data.data;
 };
 
+const AllCategory = async () => {
+  const result = await AxiosInstance.get("/customer/browse-products");
+  return result.data.data;
+};
+
 export const productService = {
   AllProducts,
+  AllCategory,
 };
